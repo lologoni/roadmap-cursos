@@ -38,6 +38,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      mailpit:
+        condition: service_started
     healthcheck:
       test:
         - CMD
@@ -48,6 +50,26 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+
+  frontend:
+    build: ./frontend
+    <<: *entorno
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    ports:
+      - "${FRONTEND_PUERTO:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  mailpit:
+    image: axllent/mailpit:v1.33.0
+    ports:
+      - "${MAILPIT_PUERTO_UI:-8025}:8025"
+      - "${MAILPIT_PUERTO_SMTP:-1025}:1025"
 
 volumes:
   pgdata:
