@@ -190,6 +190,7 @@ flowchart LR
 | 0.7 | Header, drawer y UI base | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 (incluye `MenuLateral.test.jsx`) |
 | 0.8 | Cliente HTTP | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 (incluye `cliente.test.js`) |
 | 0.9 | Compose completo | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 |
+| — | Lockfiles versionados | M0 | [x] | `chore/lockfiles` | `chore(infra): versionar uv.lock y pnpm-lock.yaml` |
 | 1.1 | Seguridad y repositorio de usuarios | M1 | [ ] | `feat/m1-seguridad` | `feat(auth): agregar hash argon2id y jwt en cookie` |
 | 1.2 | Registro | M1 | [ ] | `feat/m1-registro` | `feat(auth): permitir registro de usuarios` |
 | 1.3 | Login, logout, me | M1 | [ ] | `feat/m1-login` | `feat(auth): agregar login, logout y sesión actual` |
