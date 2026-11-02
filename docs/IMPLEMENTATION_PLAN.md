@@ -176,7 +176,7 @@ flowchart LR
 
 | # | Tarea | Módulo | Estado | Rama | Commit (título del PR) |
 |---|-------|--------|--------|------|------------------------|
-| 0.1 | Versiones y árbol de carpetas | M0 | [ ] | `chore/m0-estructura` | `chore(infra): crear estructura de carpetas y .env.example` |
+| 0.1 | Versiones y árbol de carpetas | M0 | [x] | `chore/m0-estructura` | `chore(infra): crear estructura de carpetas y .env.example` |
 | 0.2 | Compose con Postgres 18.6 | M0 | [ ] | `docker/m0-postgres` | `docker(infra): agregar postgres 18.6 con volumen y healthcheck` |
 | 0.3 | Backend mínimo + health | M0 | [ ] | `feat/m0-backend-health` | `feat(compartido): crear app fastapi con health y logging json` |
 | 0.4 | Errores y paginación compartidos | M0 | [ ] | `feat/m0-errores-paginacion` | `feat(compartido): agregar problem+json y paginación offset` |
