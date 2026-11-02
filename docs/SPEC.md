@@ -156,3 +156,4 @@ de 72 horas y el catálogo crece sin duplicados.
 | 22/10/2026 | Stack con versiones exactas (§6) y restricciones con su cumplimiento (§7) | requisito de la SPEC: registrar versiones reales |
 | 22/10/2026 | Tabla de 17 vacíos resueltos (§8) | la SPEC era intencionalmente incompleta |
 | 01/11/2026 | Instancia B, tarea 0.1: versiones reales registradas (§6, Docker Engine 29.8.0), árbol de carpetas, `.env.example` y `.gitattributes` | confirmar el stack en la máquina de desarrollo antes de escribir código |
+| 01/11/2026 | Instancia B, tareas 0.2–0.5: Postgres 18.6 + backend FastAPI en Compose, errores problem+json, paginación offset y migración inicial; decisiones nuevas TRD TD-016 (`env_file` en capas) y TD-017 (montaje de `./backend`) | que `docker compose up` funcione sin pasos manuales y que las migraciones no exijan reconstruir la imagen |
