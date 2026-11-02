@@ -1,8 +1,12 @@
 import { useSyncExternalStore } from 'react'
-import { Outlet } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
 import { useFocoAlNavegar } from '../../compartido/hooks/useFocoAlNavegar.js'
 import { Icono } from '../../compartido/ui/Icono.jsx'
+import { useSnackbar } from '../../compartido/ui/Snackbar.jsx'
+import { useLogout, useSesion } from '../../features/auth/hooks/useSesion.js'
+import { useSesionExpirada } from '../../features/auth/hooks/useSesionExpirada.js'
 import { Header } from './Header.jsx'
+import { MenuCuenta } from './MenuCuenta.jsx'
 import estilos from './Shell.module.css'
 
 function useEnLinea() {
@@ -21,9 +25,20 @@ function useEnLinea() {
 }
 
 /** Shell presente en todas las pantallas (APPFlow §3.0). */
-export function Shell({ usuario = null, cargandoSesion = false, menuCuenta, alCerrarSesion }) {
+export function Shell() {
   useFocoAlNavegar()
+  useSesionExpirada()
   const enLinea = useEnLinea()
+  const { usuario, cargando } = useSesion()
+  const logout = useLogout()
+  const navegar = useNavigate()
+  const { mostrar } = useSnackbar()
+
+  const alCerrarSesion = () => {
+    // Primero se sale de la pantalla actual: si es protegida, no debe redirigir al login
+    navegar('/')
+    logout.mutate(undefined, { onSettled: () => mostrar({ mensaje: 'Cerraste sesión' }) })
+  }
 
   return (
     <>
@@ -32,8 +47,8 @@ export function Shell({ usuario = null, cargandoSesion = false, menuCuenta, alCe
       </a>
       <Header
         usuario={usuario}
-        cargandoSesion={cargandoSesion}
-        menuCuenta={menuCuenta}
+        cargandoSesion={cargando}
+        menuCuenta={usuario && <MenuCuenta usuario={usuario} alCerrarSesion={alCerrarSesion} />}
         alCerrarSesion={alCerrarSesion}
       />
       {!enLinea && (

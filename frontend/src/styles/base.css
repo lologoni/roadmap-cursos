@@ -113,3 +113,11 @@ textarea {
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
+
+/* Fieldset usado solo para deshabilitar un grupo de campos mientras se envía */
+.sinBorde {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

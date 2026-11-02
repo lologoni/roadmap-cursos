@@ -207,7 +207,8 @@ rumbo/
         ├── features/
         │   ├── auth/
         │   │   ├── api.js
-        │   │   ├── hooks/             # useSesion, useLogin, useRegistro, useRecuperar, useRestablecer
+        │   │   ├── esquemas.js        # zod de login, registro, recuperar y restablecer
+        │   │   ├── hooks/             # useSesion, useLogin, useRegistro, useRecuperar, useRestablecer, useSesionExpirada
         │   │   ├── components/        # FormLogin, FormRegistro, CampoContrasena…
         │   │   └── pages/             # LoginPage, RegistroPage, RecuperarPage, RestablecerPage
         │   ├── catalogo/

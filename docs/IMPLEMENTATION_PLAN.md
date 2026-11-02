@@ -198,9 +198,9 @@ flowchart LR
 | 1.5 | Seed admin y promover | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 (`app.auth.cli crear-admin` y `promover`) |
 | 1.6 | Solicitud de recuperación | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
 | 1.7 | Restablecer contraseña | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
-| 1.8 | Sesión y guardas en frontend | M1 | [ ] | `feat/m1-sesion-frontend` | `feat(auth): agregar sesión, guardas de ruta y logout` |
-| 1.9 | Pantallas login y registro | M1 | [ ] | `feat/m1-pantallas-acceso` | `feat(auth): agregar pantallas de login y registro` |
-| 1.10 | Pantallas recuperar y restablecer | M1 | [ ] | `feat/m1-pantallas-recuperacion` | `feat(auth): agregar pantallas de recuperación de contraseña` |
+| 1.8 | Sesión y guardas en frontend | M1 | [x] | `feat/m1-auth-frontend` | `feat(auth): agregar sesión, guardas de ruta y pantallas de acceso y recuperación` (incluye `RutaProtegida.test.jsx`) |
+| 1.9 | Pantallas login y registro | M1 | [x] | `feat/m1-auth-frontend` | ídem 1.8 |
+| 1.10 | Pantallas recuperar y restablecer | M1 | [x] | `feat/m1-auth-frontend` | ídem 1.8 (cookie verificada a través del proxy, R-05) |
 | 2.1 | Seed de demo | M2 | [ ] | `feat/m2-seed-demo` | `feat(catalogo): agregar script de datos de demo` |
 | 2.2 | Categorías | M2 | [ ] | `feat/m2-categorias` | `feat(catalogo): exponer categorías paginadas` |
 | 2.3 | Listado de cursos | M2 | [ ] | `feat/m2-listado-cursos` | `feat(catalogo): listar cursos publicados con búsqueda` |
