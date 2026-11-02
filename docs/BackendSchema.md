@@ -326,6 +326,7 @@ Todas las transiciones son libres (BR-011), por `PATCH /api/v1/roadmap/items/{it
 | HTTP | `code` | Cuándo |
 |------|--------|--------|
 | 400 | `token_invalido` | token de recuperación inexistente, vencido o ya usado |
+| 400 | `cuerpo_invalido` | el cuerpo no se puede decodificar como JSON UTF-8 (agregado en la Instancia B) |
 | 401 | `no_autenticado` | falta la cookie, el JWT venció, o `token_version` no coincide |
 | 401 | `credenciales_invalidas` | email o contraseña incorrectos, o cuenta inactiva |
 | 403 | `sin_permiso` | el rol no alcanza para la ruta |

@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
 
+from app.auth import router as auth
 from app.compartido import salud
 from app.compartido.errores import registrar_handlers
+from app.compartido.limite_tasa import limitador, manejar_limite_excedido
 from app.compartido.registro_logs import MiddlewareRequestId, configurar_logging
 from app.config import obtener_settings
 
@@ -32,8 +35,11 @@ def crear_app() -> FastAPI:
     app.add_middleware(MiddlewareRequestId)
 
     registrar_handlers(app)
+    app.state.limiter = limitador
+    app.add_exception_handler(RateLimitExceeded, manejar_limite_excedido)
 
     app.include_router(salud.router, prefix=PREFIJO_API)
+    app.include_router(auth.router, prefix=PREFIJO_API)
     return app
 
 

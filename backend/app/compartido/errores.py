@@ -158,6 +158,15 @@ def registrar_handlers(app: FastAPI) -> None:
     async def manejar_http(request: Request, exc: StarletteHTTPException) -> JSONResponse:
         if exc.status_code == 404:
             return respuesta_problema(request, 404, "no_encontrado", "No encontrado")
+        if exc.status_code == 400:
+            # FastAPI responde 400 cuando el cuerpo no se puede decodificar
+            return respuesta_problema(
+                request,
+                400,
+                "cuerpo_invalido",
+                "El cuerpo de la request no es válido",
+                "Enviá un JSON en UTF-8.",
+            )
         return respuesta_problema(
             request,
             exc.status_code,
