@@ -1,0 +1,40 @@
+.saltar {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: calc(var(--z-snackbar) + 1);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--peso-medio);
+  transform: translateY(-200%);
+}
+
+.saltar:focus {
+  transform: translateY(0);
+}
+
+.sinConexion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-warning-container);
+  font-size: var(--text-sm);
+}
+
+.principal {
+  padding-block: var(--space-5) var(--space-8);
+}
+
+.principal:focus {
+  outline: none;
+}
+
+@media (min-width: 1024px) {
+  .principal {
+    padding-block-start: var(--space-6);
+  }
+}

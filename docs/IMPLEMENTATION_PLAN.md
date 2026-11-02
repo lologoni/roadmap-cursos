@@ -186,10 +186,10 @@ flowchart LR
 | 0.3 | Backend mínimo + health | M0 | [x] | `feat/m0-backend-base` | ídem 0.2 (`uv.lock` se versiona en `chore/lockfiles`) |
 | 0.4 | Errores y paginación compartidos | M0 | [x] | `feat/m0-backend-base` | ídem 0.2 |
 | 0.5 | Migración inicial | M0 | [x] | `feat/m0-backend-base` | ídem 0.2 |
-| 0.6 | Frontend shell + tokens | M0 | [ ] | `feat/m0-frontend-shell` | `feat(compartido): crear shell react con rutas y tokens` |
-| 0.7 | Header, drawer y UI base | M0 | [ ] | `feat/m0-ui-base` | `feat(compartido): agregar drawer accesible y componentes base` |
-| 0.8 | Cliente HTTP | M0 | [ ] | `feat/m0-cliente-http` | `feat(compartido): agregar cliente http con problem+json` |
-| 0.9 | Compose completo | M0 | [ ] | `docker/m0-compose-completo` | `docker(infra): levantar los cuatro servicios con un comando` |
+| 0.6 | Frontend shell + tokens | M0 | [x] | `feat/m0-frontend-base` | `feat(compartido): crear shell react con drawer accesible, componentes base y compose completo` |
+| 0.7 | Header, drawer y UI base | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 (incluye `MenuLateral.test.jsx`) |
+| 0.8 | Cliente HTTP | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 (incluye `cliente.test.js`) |
+| 0.9 | Compose completo | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 |
 | 1.1 | Seguridad y repositorio de usuarios | M1 | [ ] | `feat/m1-seguridad` | `feat(auth): agregar hash argon2id y jwt en cookie` |
 | 1.2 | Registro | M1 | [ ] | `feat/m1-registro` | `feat(auth): permitir registro de usuarios` |
 | 1.3 | Login, logout, me | M1 | [ ] | `feat/m1-login` | `feat(auth): agregar login, logout y sesión actual` |

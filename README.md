@@ -61,12 +61,40 @@ Rumbo resuelve eso con tres piezas:
 | Instancia | Contenido | Estado |
 |-----------|-----------|--------|
 | A — Documentación | repo + `.gitignore` + 7 documentos | ✅ enviada a aprobación el 22/10/2026 |
-| B — Desarrollo del MVP | ejecución del Implementation Plan (M0 → M5) | ⏳ pendiente de aprobación |
+| B — Desarrollo del MVP | ejecución del Implementation Plan (M0 → M5) | 🚧 en desarrollo |
 | C — Clase 27/10 | testing, Docker multi-stage, gestión del cambio | ⏳ |
 
-> **Gate de documentación:** hasta la aprobación de la Instancia A este repo no contiene código
-> fuente ejecutable. Solo Markdown, diagramas Mermaid y el `.gitignore` ya preparado para
-> React/Vite/pnpm + FastAPI/uv.
+## Cómo levantar (desarrollo)
+
+**Requisitos:** Docker Engine 29+ con Docker Compose 5+ y Git. Node, pnpm, Python y uv corren
+dentro de los contenedores: no hace falta instalarlos.
+
+```bash
+git clone https://github.com/lologoni/roadmap-cursos.git
+cd roadmap-cursos
+docker compose up --build
+```
+
+Compose lee `.env.example`; para cambiar valores, copiarlo a `.env` y editarlo (TRD TD-016).
+El backend aplica las migraciones al arrancar.
+
+| Servicio | URL |
+|----------|-----|
+| App (frontend) | http://localhost:5173 |
+| API — health | http://localhost:8000/api/v1/health |
+| API — documentación | http://localhost:8000/api/v1/docs |
+| Mailpit (emails de desarrollo) | http://localhost:8025 |
+
+Comandos útiles:
+
+```bash
+docker compose ps                                   # los 4 servicios arriba
+docker compose exec backend uv run ruff check .     # lint del backend
+docker compose exec frontend pnpm lint              # lint de JS
+docker compose exec frontend pnpm lint:css          # lint de CSS (prohíbe max-width)
+docker compose exec frontend pnpm test              # tests de Vitest
+docker compose down -v                              # borrar todo, incluida la base
+```
 
 ## Versionado
 

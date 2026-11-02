@@ -1,0 +1,70 @@
+.paginador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-block: var(--space-5);
+  font-variant-numeric: tabular-nums;
+}
+
+.flecha,
+.numero {
+  display: inline-grid;
+  place-items: center;
+  width: var(--target-min);
+  height: var(--target-min);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.flecha:hover,
+.numero:hover {
+  background: var(--color-hover);
+}
+
+.flecha[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: rgb(32 33 36 / 38%);
+  background: transparent;
+}
+
+.compacto {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.numeros {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.actual,
+.actual:hover {
+  background: var(--color-primary-container);
+  color: var(--color-primary-dark);
+  font-weight: var(--peso-medio);
+}
+
+.salto {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .compacto {
+    display: none;
+  }
+
+  .numeros {
+    display: flex;
+    gap: var(--space-1);
+  }
+}

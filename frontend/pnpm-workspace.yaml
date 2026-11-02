@@ -1,0 +1,9 @@
+# Configuración de pnpm del proyecto (no es un monorepo: un solo paquete)
+# Dentro del contenedor no hay TTY: reinstalar node_modules no debe pedir confirmación
+confirmModulesPurge: false
+# Política de antigüedad mínima de pnpm 11: versiones publicadas hace menos del umbral,
+# aceptadas explícitamente al fijar el lockfile
+minimumReleaseAgeExclude:
+  - '@tanstack/query-core@5.105.1'
+  - '@tanstack/react-query@5.105.1'
+  - globals@17.14.0

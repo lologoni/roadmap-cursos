@@ -52,8 +52,8 @@ Las versiones exactas de estas dependencias quedan fijadas por los lockfiles (`u
 | Frontend | `@tanstack/react-query` | 5.x | cache y estado de servidor (TD-007) |
 | Frontend | `react-hook-form` + `zod` + `@hookform/resolvers` | 7.x / 4.x / 5.x | formularios y validación (TD-011) |
 | Frontend | `@fontsource/roboto` · `material-symbols` | 5.x · 0.x | tipografía e iconos self-hosted (UX-UI §2.2, §7) |
-| Frontend (dev) | `vitest`, `@testing-library/react`, `jsdom` | 4.x / 16.x / 26.x | tests |
-| Frontend (dev) | `eslint`, `stylelint` | 9.x / 16.x | lint de JS y de CSS (regla mobile-first, §5) |
+| Frontend (dev) | `vitest`, `@testing-library/react`, `@testing-library/jest-dom`, `jsdom` | 4.x / 16.x / 6.x / 26.x | tests |
+| Frontend (dev) | `eslint`, `stylelint` | 10.x / 16.x | lint de JS y de CSS (regla mobile-first, §5). ESLint pasa de 9.x a 10.x en la Instancia B: la 9 quedó fuera de soporte |
 
 ## 2. Decisiones técnicas
 
@@ -75,7 +75,7 @@ Las versiones exactas de estas dependencias quedan fijadas por los lockfiles (`u
 | TD-014 | Reordenar el roadmap | drag & drop (dnd-kit) · **botones Subir/Bajar** · campo numérico | **Botones Subir/Bajar** que envían `PATCH {orden}` | Accesible por teclado y lector de pantalla sin trabajo extra, usable en mobile con targets de 48px, sin dependencia. Drag & drop queda para v2 (PRD §8) |
 | TD-015 | Seed de datos | SQL plano · fixtures en tests · **script idempotente** | Migración inicial carga las 13 categorías; script `uv run python -m app.semillas.cargar_demo` crea admin, 2 usuarios demo, 40 cursos publicados y 5 aportes en revisión; opción `--cursos 1000` para la prueba de rendimiento | Idempotente (no duplica si se corre dos veces); los datos de demo nunca están en la migración |
 | TD-016 | Variables de entorno en Compose (Instancia B) | exigir `cp .env.example .env` · valores por defecto en el YAML · **`env_file` en capas** | **`env_file`** con `.env.example` (obligatorio) y `.env` (opcional, sobreescribe) en todos los servicios; el YAML no interpola secretos | El DoD del docente es `git clone` + `docker compose up`: con capas el stack levanta sin pasos manuales y quien necesite otros valores crea su `.env`. Los valores de `.env.example` son solo de desarrollo |
-| TD-017 | Montaje del código del backend en dev (Instancia B) | bind mount de `./backend/app` · **bind mount de `./backend` + volumen anónimo en `/app/.venv`** | **`./backend` completo** | Con solo `app/` montado, una migración nueva o un cambio en `pyproject.toml` exige reconstruir la imagen; montando todo `backend/` el volumen anónimo protege el `.venv` de la imagen y `uv run` mantiene `uv.lock` sincronizado en el host. El log de acceso de uvicorn se desactiva: lo reemplaza la línea JSON por request del middleware (§4.5) |
+| TD-017 | Montaje del código en dev (Instancia B) | bind mount de `./backend/app` y `./frontend/src` · **bind mount de `./backend` y `./frontend` + volúmenes anónimos en `/app/.venv` y `/app/node_modules`** | **carpeta completa de cada servicio** | Con solo `app/` montado, una migración nueva o un cambio en `pyproject.toml` exige reconstruir la imagen; montando todo `backend/` el volumen anónimo protege el `.venv` de la imagen y `uv run` mantiene `uv.lock` sincronizado en el host. El log de acceso de uvicorn se desactiva: lo reemplaza la línea JSON por request del middleware (§4.5). En el frontend vale lo mismo para `package.json` y `pnpm-lock.yaml`; el store de pnpm se ubica fuera del montaje (`/pnpm/store`) y el watcher de Vite ignora `node_modules`, porque con polling sobre un bind mount de Windows miles de archivos dejan colgado el optimizador de dependencias |
 
 ## 3. Arquitectura
 
@@ -188,6 +188,7 @@ rumbo/
 └── frontend/
     ├── package.json
     ├── pnpm-lock.yaml
+    ├── pnpm-workspace.yaml            # configuración de pnpm (sin TTY en el contenedor)
     ├── vite.config.js                 # proxy /api + configuración de Vitest
     ├── stylelint.config.js            # regla: sin max-width en media queries
     ├── eslint.config.js
@@ -229,6 +230,7 @@ rumbo/
         │   ├── ui/                    # Boton, CampoTexto, Select, GrupoSiNo, Chip, Paginador, Modal, Snackbar, Skeleton, EstadoVacio, BannerError
         │   ├── hooks/                 # usePaginacionUrl, useFocoAlNavegar, useCuentaRegresiva
         │   └── utilidades/            # formatearFecha, construirQuery
+        ├── pruebas/configuracion.js   # setup de Vitest (matchers de Testing Library)
         └── styles/
             ├── tokens.css             # :root de UX-UI §2.4
             ├── base.css               # reset, tipografía, :focus-visible
@@ -244,8 +246,8 @@ rumbo/
 |----------|---------------|-------------|-----|----------|
 | `postgres` | `postgres:18.6` | 5432 | base de datos | volumen `pgdata` montado en **`/var/lib/postgresql`** (cambio de la imagen 18: `PGDATA` pasa a `/var/lib/postgresql/18/docker`); healthcheck `pg_isready -U $POSTGRES_USER`; script de init crea la BD `rumbo_test` |
 | `backend` | build `./backend` (base `python:3.13-slim` + binario `uv` copiado de `ghcr.io/astral-sh/uv:0.12.2`) | 8000 | API FastAPI | `depends_on: postgres (service_healthy), mailpit`; comando: `uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`; bind mount `./backend` (TD-017); volumen anónimo para `.venv`; healthcheck `GET /api/v1/health` |
-| `frontend` | build `./frontend` (base `node:24-alpine` + Corepack con pnpm 11.18.0) | 5173 | SPA Vite (dev server) | `depends_on: backend`; comando `pnpm dev --host 0.0.0.0`; bind mount `./frontend/src`; volumen anónimo para `node_modules`; `VITE_PROXY_TARGET=http://backend:8000` |
-| `mailpit` | `axllent/mailpit` (tag fijo en la tarea 1.6) | 8025 (UI) · 1025 (SMTP) | captura de emails | sin persistencia |
+| `frontend` | build `./frontend` (base `node:24-alpine` + Corepack con pnpm 11.18.0) | 5173 | SPA Vite (dev server) | `depends_on: backend`; comando `pnpm install && pnpm dev --host 0.0.0.0`; bind mount `./frontend` (TD-017); volumen anónimo para `node_modules`; `VITE_PROXY_TARGET=http://backend:8000` |
+| `mailpit` | `axllent/mailpit:v1.33.0` | 8025 (UI) · 1025 (SMTP) | captura de emails | sin persistencia |
 
 ```mermaid
 flowchart LR
@@ -362,6 +364,7 @@ El frontend decide qué mostrar por `code`, nunca por el texto de `title`.
 | R-09 | Librerías del ecosistema todavía no compatibles con React 19.2 o Vite 8 | baja | medio | dependencias mínimas (§1.2); verificación en la tarea 0.4 antes de agregar cada una |
 | R-10 | `pg_trgm` no disponible o índices no usados con `ILIKE` corto | baja | bajo | la migración crea la extensión; `q` exige mínimo 2 caracteres; verificado con `EXPLAIN` en la tarea 5.3 |
 | R-11 | Secretos commiteados por error | baja | alto | `.env` en `.gitignore`; `.env.example` sin valores reales; checklist del PR |
+| R-12 | La fuente variable completa de Material Symbols pesa ~5,4 MB y demora los iconos en redes lentas (RNF-007) | alta | bajo | aceptado en el MVP (los iconos acompañan texto, nunca lo reemplazan); en la Instancia C se genera un subset con solo los iconos usados |
 
 ---
 

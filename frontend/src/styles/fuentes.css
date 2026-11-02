@@ -1,0 +1,4 @@
+/* Tipografía e iconos self-hosted (UX-UI §2.2 y §7): sin CDN ni pedidos a terceros */
+@import url("@fontsource/roboto/400.css");
+@import url("@fontsource/roboto/500.css");
+@import url("material-symbols/rounded.css");

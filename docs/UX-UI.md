@@ -45,6 +45,8 @@
 | `--color-error-container` | `#fce8e6` | fondo del chip "Rechazado" y del bloque de motivo de rechazo | con `--color-text` 13.66:1 ✓ · icono `#d93025` 4.05:1 ✓ |
 | `--color-snackbar` | `#323232` | fondo del snackbar | texto blanco **12.82:1 ✓** |
 | `--color-snackbar-action` | `#8ab4f8` | botón de acción del snackbar ("Deshacer") | vs `#323232` **6.08:1 ✓** |
+| `--color-snackbar-exito` | `#81c995` | icono de éxito del snackbar (§4.8) | vs `#323232` **6.55:1 ✓** (icono ≥ 3:1) |
+| `--color-snackbar-error` | `#f28b82` | icono de error del snackbar (§4.8) | vs `#323232` **5.37:1 ✓** (icono ≥ 3:1) |
 | `--color-scrim` | `rgba(32, 33, 36, 0.32)` | velo detrás de drawer y modales | — |
 
 **Decisiones que surgen de los cálculos (difieren del ejemplo de cátedra):**
@@ -119,6 +121,8 @@ Reglas: un solo `<h1>` por pantalla; jerarquía `h1 > h2 > h3` sin saltos; núme
   --color-error-container: #fce8e6;
   --color-snackbar: #323232;
   --color-snackbar-action: #8ab4f8;
+  --color-snackbar-exito: #81c995;
+  --color-snackbar-error: #f28b82;
   --color-scrim: rgba(32, 33, 36, 0.32);
 
   /* Tipografía */
