@@ -11,7 +11,8 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      '/api': { target: destinoProxy, changeOrigin: false },
+      // xfwd agrega X-Forwarded-For: el rate limit del backend ve la IP real (TD-018)
+      '/api': { target: destinoProxy, changeOrigin: false, xfwd: true },
     },
     // Los bind mounts de Windows no propagan eventos del sistema de archivos (riesgo R-04)
     watch: {

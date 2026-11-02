@@ -191,13 +191,13 @@ flowchart LR
 | 0.8 | Cliente HTTP | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 (incluye `cliente.test.js`) |
 | 0.9 | Compose completo | M0 | [x] | `feat/m0-frontend-base` | ídem 0.6 |
 | — | Lockfiles versionados | M0 | [x] | `chore/lockfiles` | `chore(infra): versionar uv.lock y pnpm-lock.yaml` |
-| 1.1 | Seguridad y repositorio de usuarios | M1 | [ ] | `feat/m1-seguridad` | `feat(auth): agregar hash argon2id y jwt en cookie` |
-| 1.2 | Registro | M1 | [ ] | `feat/m1-registro` | `feat(auth): permitir registro de usuarios` |
-| 1.3 | Login, logout, me | M1 | [ ] | `feat/m1-login` | `feat(auth): agregar login, logout y sesión actual` |
-| 1.4 | Rate limiting | M1 | [ ] | `feat/m1-rate-limit` | `feat(auth): limitar intentos de login con slowapi` |
-| 1.5 | Seed admin y promover | M1 | [ ] | `feat/m1-roles` | `feat(auth): crear admin inicial y comando promover` |
-| 1.6 | Solicitud de recuperación | M1 | [ ] | `feat/m1-recuperar` | `feat(auth): enviar enlace de recuperación por email` |
-| 1.7 | Restablecer contraseña | M1 | [ ] | `feat/m1-restablecer` | `feat(auth): restablecer contraseña e invalidar sesiones` |
+| 1.1 | Seguridad y repositorio de usuarios | M1 | [x] | `feat/m1-auth-api` | `feat(auth): agregar registro, login con rate limit, roles y recuperación de contraseña` |
+| 1.2 | Registro | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
+| 1.3 | Login, logout, me | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
+| 1.4 | Rate limiting | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
+| 1.5 | Seed admin y promover | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 (`app.auth.cli crear-admin` y `promover`) |
+| 1.6 | Solicitud de recuperación | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
+| 1.7 | Restablecer contraseña | M1 | [x] | `feat/m1-auth-api` | ídem 1.1 |
 | 1.8 | Sesión y guardas en frontend | M1 | [ ] | `feat/m1-sesion-frontend` | `feat(auth): agregar sesión, guardas de ruta y logout` |
 | 1.9 | Pantallas login y registro | M1 | [ ] | `feat/m1-pantallas-acceso` | `feat(auth): agregar pantallas de login y registro` |
 | 1.10 | Pantallas recuperar y restablecer | M1 | [ ] | `feat/m1-pantallas-recuperacion` | `feat(auth): agregar pantallas de recuperación de contraseña` |
