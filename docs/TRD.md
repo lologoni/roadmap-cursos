@@ -18,12 +18,18 @@
 | Backend — gestor de proyecto | uv | 0.12.2 | SPEC; lockfile reproducible (`uv.lock`) y entornos en segundos |
 | Backend — runtime | Python | 3.13 (imagen `python:3.13-slim`) | todas las dependencias (argon2-cffi, psycopg) publican wheels para 3.13; 3.14 se evalúa después del MVP |
 | Base de datos | PostgreSQL | 18.6 (imagen `postgres:18.6`) | fijado por SPEC |
-| Infra (dev) | Docker Engine + Docker Compose | 29.6.1 · 5.5.1 | SPEC: última stable |
+| Infra (dev) | Docker Engine + Docker Compose | 29.8.0 · 5.5.1 | SPEC: última stable |
 
 > Versiones verificadas contra las publicaciones oficiales el 22/10/2026. La tarea 0.1 del
 > Implementation Plan las confirma en la máquina de desarrollo (`node -v`, `pnpm -v`,
 > `uv --version`, `docker version`, `docker compose version`) y, si difieren, se actualizan esta
 > tabla y [SPEC §6](SPEC.md#6-stack-registrado-versiones-exactas-con-las-que-se-va-a-desarrollar) en el mismo PR.
+>
+> **Resultado de la tarea 0.1 (01/11/2026):** Docker Engine 29.8.0 y Compose 5.5.1 instalados.
+> Node, pnpm, Python y uv se ejecutan dentro de los contenedores con las versiones de la tabla;
+> las versiones locales (Node 22.23.4, pnpm 11.20.0, uv 0.12.1, Python 3.14.6) no participan del
+> entorno de Compose. Se agrega `.gitattributes` con `eol=lf` (riesgo de Windows del
+> Implementation Plan §6).
 
 ### 1.2 Dependencias principales
 

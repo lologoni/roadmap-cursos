@@ -94,12 +94,18 @@ de 72 horas y el catálogo crece sin duplicados.
 | Frontend | React + Vite + pnpm | react 19.2.6 · react-dom 19.2.6 · vite 8.1.3 · pnpm 11.18.0 · Node.js 24 LTS |
 | Backend | FastAPI + uv | fastapi 0.158.2 · uv 0.12.2 · Python 3.13 |
 | Base de datos | PostgreSQL | 18.6 (imagen `postgres:18.6`) |
-| Infra (dev) | Docker + Docker Compose | Docker Engine 29.6.1 · Docker Compose 5.5.1 |
+| Infra (dev) | Docker + Docker Compose | Docker Engine 29.8.0 · Docker Compose 5.5.1 |
 
 > Versiones verificadas contra las publicaciones oficiales el 22/10/2026. En la tarea 0.1 del
 > Implementation Plan se confirman con `node -v`, `pnpm -v`, `uv --version`, `python --version`,
 > `docker version` y `docker compose version`; si la instalación real difiere, se actualiza esta
 > tabla y el TRD §1 en el mismo PR. Justificación de cada elección en [TRD §1](TRD.md#1-stack-y-versiones-exactas).
+>
+> **Verificación de la tarea 0.1 (01/11/2026):** Node, Python, pnpm y uv corren **dentro de los
+> contenedores** con las versiones de la tabla (imágenes `node:24-alpine`, `python:3.13-slim`,
+> `ghcr.io/astral-sh/uv:0.12.2`; pnpm fijado con `packageManager` + Corepack). En la máquina de
+> desarrollo hay Node 22.23.4, pnpm 11.20.0, uv 0.12.1 y Python 3.14.6, que no intervienen en el
+> entorno de Compose. Docker Engine instalado: 29.8.0 (se actualiza la tabla).
 
 ## 7. Restricciones técnicas heredadas de la SPEC de clase
 
@@ -149,3 +155,4 @@ de 72 horas y el catálogo crece sin duplicados.
 | 22/10/2026 | Reglas clave BR-001 a BR-005 (§5) | fijar el carácter del producto antes del PRD |
 | 22/10/2026 | Stack con versiones exactas (§6) y restricciones con su cumplimiento (§7) | requisito de la SPEC: registrar versiones reales |
 | 22/10/2026 | Tabla de 17 vacíos resueltos (§8) | la SPEC era intencionalmente incompleta |
+| 01/11/2026 | Instancia B, tarea 0.1: versiones reales registradas (§6, Docker Engine 29.8.0), árbol de carpetas, `.env.example` y `.gitattributes` | confirmar el stack en la máquina de desarrollo antes de escribir código |
