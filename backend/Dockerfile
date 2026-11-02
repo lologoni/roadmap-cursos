@@ -12,8 +12,8 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Dependencias primero para aprovechar la caché de capas
-COPY pyproject.toml uv.lock* ./
-RUN uv sync --no-install-project
+COPY pyproject.toml uv.lock ./
+RUN uv sync --locked --no-install-project
 
 COPY . .
 
