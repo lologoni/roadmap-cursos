@@ -12,6 +12,7 @@ import CatalogoPage from '../features/catalogo/pages/CatalogoPage.jsx'
 import DetalleCursoPage from '../features/catalogo/pages/DetalleCursoPage.jsx'
 import HomePage from '../features/catalogo/pages/HomePage.jsx'
 import RoadmapPage from '../features/roadmap/pages/RoadmapPage.jsx'
+import { RutaConRol, RutaProtegida } from './guardas/RutaProtegida.jsx'
 import { Shell } from './layout/Shell.jsx'
 import NoEncontrado from './paginas/NoEncontrado.jsx'
 
@@ -27,12 +28,22 @@ export const rutas = [
       { path: '/registro', element: <RegistroPage /> },
       { path: '/recuperar', element: <RecuperarPage /> },
       { path: '/restablecer', element: <RestablecerPage /> },
-      { path: '/roadmap', element: <RoadmapPage /> },
-      { path: '/aportar', element: <AportarPage /> },
-      { path: '/mis-aportes', element: <MisAportesPage /> },
-      { path: '/mis-aportes/:aporteId', element: <EstadoAportePage /> },
-      { path: '/moderacion', element: <BandejaModeracionPage /> },
-      { path: '/moderacion/:aporteId', element: <RevisionAportePage /> },
+      {
+        element: <RutaProtegida />,
+        children: [
+          { path: '/roadmap', element: <RoadmapPage /> },
+          { path: '/aportar', element: <AportarPage /> },
+          { path: '/mis-aportes', element: <MisAportesPage /> },
+          { path: '/mis-aportes/:aporteId', element: <EstadoAportePage /> },
+          {
+            element: <RutaConRol roles={['moderador', 'admin']} />,
+            children: [
+              { path: '/moderacion', element: <BandejaModeracionPage /> },
+              { path: '/moderacion/:aporteId', element: <RevisionAportePage /> },
+            ],
+          },
+        ],
+      },
       { path: '*', element: <NoEncontrado /> },
     ],
   },
