@@ -74,6 +74,8 @@ Las versiones exactas de estas dependencias quedan fijadas por los lockfiles (`u
 | TD-013 | Comunicación frontend → API | CORS entre `:5173` y `:8000` · **proxy de Vite (mismo origen)** | **Proxy de Vite**: el navegador solo habla con `:5173`; `/api/*` se reenvía a `http://backend:8000` | Mismo origen = cookie SameSite sin configuración CORS con credenciales, menos superficie de error. `CORS_ORIGINS` queda vacío en dev |
 | TD-014 | Reordenar el roadmap | drag & drop (dnd-kit) · **botones Subir/Bajar** · campo numérico | **Botones Subir/Bajar** que envían `PATCH {orden}` | Accesible por teclado y lector de pantalla sin trabajo extra, usable en mobile con targets de 48px, sin dependencia. Drag & drop queda para v2 (PRD §8) |
 | TD-015 | Seed de datos | SQL plano · fixtures en tests · **script idempotente** | Migración inicial carga las 13 categorías; script `uv run python -m app.semillas.cargar_demo` crea admin, 2 usuarios demo, 40 cursos publicados y 5 aportes en revisión; opción `--cursos 1000` para la prueba de rendimiento | Idempotente (no duplica si se corre dos veces); los datos de demo nunca están en la migración |
+| TD-016 | Variables de entorno en Compose (Instancia B) | exigir `cp .env.example .env` · valores por defecto en el YAML · **`env_file` en capas** | **`env_file`** con `.env.example` (obligatorio) y `.env` (opcional, sobreescribe) en todos los servicios; el YAML no interpola secretos | El DoD del docente es `git clone` + `docker compose up`: con capas el stack levanta sin pasos manuales y quien necesite otros valores crea su `.env`. Los valores de `.env.example` son solo de desarrollo |
+| TD-017 | Montaje del código del backend en dev (Instancia B) | bind mount de `./backend/app` · **bind mount de `./backend` + volumen anónimo en `/app/.venv`** | **`./backend` completo** | Con solo `app/` montado, una migración nueva o un cambio en `pyproject.toml` exige reconstruir la imagen; montando todo `backend/` el volumen anónimo protege el `.venv` de la imagen y `uv run` mantiene `uv.lock` sincronizado en el host. El log de acceso de uvicorn se desactiva: lo reemplaza la línea JSON por request del middleware (§4.5) |
 
 ## 3. Arquitectura
 
@@ -125,6 +127,7 @@ rumbo/
 ├── README.md
 ├── docker-compose.yml
 ├── .env.example                       # variables de §4.4, sin secretos reales
+├── infra/postgres/                    # scripts de init de Postgres (crea rumbo_test)
 ├── docs/                              # los 7 documentos
 ├── backend/
 │   ├── pyproject.toml
@@ -240,7 +243,7 @@ rumbo/
 | Servicio | Imagen / base | Puerto host | Rol | Detalles |
 |----------|---------------|-------------|-----|----------|
 | `postgres` | `postgres:18.6` | 5432 | base de datos | volumen `pgdata` montado en **`/var/lib/postgresql`** (cambio de la imagen 18: `PGDATA` pasa a `/var/lib/postgresql/18/docker`); healthcheck `pg_isready -U $POSTGRES_USER`; script de init crea la BD `rumbo_test` |
-| `backend` | build `./backend` (base `python:3.13-slim` + binario `uv` copiado de `ghcr.io/astral-sh/uv:0.12.2`) | 8000 | API FastAPI | `depends_on: postgres (service_healthy), mailpit`; comando: `uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`; bind mount `./backend/app`; volumen anónimo para `.venv`; healthcheck `GET /api/v1/health` |
+| `backend` | build `./backend` (base `python:3.13-slim` + binario `uv` copiado de `ghcr.io/astral-sh/uv:0.12.2`) | 8000 | API FastAPI | `depends_on: postgres (service_healthy), mailpit`; comando: `uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`; bind mount `./backend` (TD-017); volumen anónimo para `.venv`; healthcheck `GET /api/v1/health` |
 | `frontend` | build `./frontend` (base `node:24-alpine` + Corepack con pnpm 11.18.0) | 5173 | SPA Vite (dev server) | `depends_on: backend`; comando `pnpm dev --host 0.0.0.0`; bind mount `./frontend/src`; volumen anónimo para `node_modules`; `VITE_PROXY_TARGET=http://backend:8000` |
 | `mailpit` | `axllent/mailpit` (tag fijo en la tarea 1.6) | 8025 (UI) · 1025 (SMTP) | captura de emails | sin persistencia |
 

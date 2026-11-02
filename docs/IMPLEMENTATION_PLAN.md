@@ -173,14 +173,19 @@ flowchart LR
 
 > **Regla:** 1 tarea (o lote coherente) = 1 rama según el flujo del README + PR con squash merge
 > y título en Conventional Commits. Se actualiza esta tabla en el mismo PR que cierra la tarea.
+>
+> **Ejecución real:** las tareas se agruparon en lotes coherentes por módulo y capa (backend /
+> frontend); las filas de un mismo lote comparten rama y título de PR. Los tests automatizados que
+> mencionan algunos DoD se implementan en la Instancia C (§5); en la Instancia B cada DoD se
+> verificó con `curl`, consultas `psql` y recorrido de la UI sobre el stack de Docker Compose.
 
 | # | Tarea | Módulo | Estado | Rama | Commit (título del PR) |
 |---|-------|--------|--------|------|------------------------|
 | 0.1 | Versiones y árbol de carpetas | M0 | [x] | `chore/m0-estructura` | `chore(infra): crear estructura de carpetas y .env.example` |
-| 0.2 | Compose con Postgres 18.6 | M0 | [ ] | `docker/m0-postgres` | `docker(infra): agregar postgres 18.6 con volumen y healthcheck` |
-| 0.3 | Backend mínimo + health | M0 | [ ] | `feat/m0-backend-health` | `feat(compartido): crear app fastapi con health y logging json` |
-| 0.4 | Errores y paginación compartidos | M0 | [ ] | `feat/m0-errores-paginacion` | `feat(compartido): agregar problem+json y paginación offset` |
-| 0.5 | Migración inicial | M0 | [ ] | `feat/m0-migracion-inicial` | `feat(infra): crear esquema inicial con alembic` |
+| 0.2 | Compose con Postgres 18.6 | M0 | [x] | `feat/m0-backend-base` | `feat(infra): crear backend fastapi con postgres, errores, paginación y esquema inicial` |
+| 0.3 | Backend mínimo + health | M0 | [x] | `feat/m0-backend-base` | ídem 0.2 (`uv.lock` se versiona en `chore/lockfiles`) |
+| 0.4 | Errores y paginación compartidos | M0 | [x] | `feat/m0-backend-base` | ídem 0.2 |
+| 0.5 | Migración inicial | M0 | [x] | `feat/m0-backend-base` | ídem 0.2 |
 | 0.6 | Frontend shell + tokens | M0 | [ ] | `feat/m0-frontend-shell` | `feat(compartido): crear shell react con rutas y tokens` |
 | 0.7 | Header, drawer y UI base | M0 | [ ] | `feat/m0-ui-base` | `feat(compartido): agregar drawer accesible y componentes base` |
 | 0.8 | Cliente HTTP | M0 | [ ] | `feat/m0-cliente-http` | `feat(compartido): agregar cliente http con problem+json` |
